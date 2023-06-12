@@ -1,5 +1,6 @@
 const http = require('http');
-const app = require('./app')
+const app = require('./app');
+const mongoose = require('mongoose');
 
 // return valid port
 const normalizePort = val => {
@@ -49,3 +50,10 @@ server.on('listening', () => {
 });
 
 server.listen(port);
+
+// database connection 
+mongoose.connect('mongodb+srv://jeanne4l:qvdB2wNFm4XCOGAB@monvieuxgrimoire.3jve4je.mongodb.net/?retryWrites=true&w=majority',
+    { useNewUrlParser: true,
+        useUnifiedTopology: true })
+    .then(() => console.log('Connexion à MongoDB réussie !'))
+    .catch(() => console.log('Connexion à MongoDB échouée !'));

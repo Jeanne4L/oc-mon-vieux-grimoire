@@ -1,23 +1,12 @@
-const sharp = require ('sharp')
 const fs = require('fs');
-const Book = require('../models/Book')
+const Book = require('../models/Book');
 
 exports.createBook = async (req, res) => {
     const bookObject = JSON.parse(req.body.book);
     delete bookObject._id;
     delete bookObject.userId;
 
-    const { buffer, originalname } = await req.file;
-    const fileName = `${originalname}-${Date.now()}.webp`;
-
-    // convert input image to webp
-    sharp(buffer)
-    .resize({ width: 500 })
-    .webp()
-    .toFile("./images/" + fileName)
-    .catch(function(err) {
-        console.log(err)
-    })
+    const fileName = req.fileName;
 
     const book = new Book({
         ...bookObject,
@@ -84,21 +73,7 @@ exports.getAllBooks = (req, res) => {
 }
 
 exports.modifyBook = async (req, res) => {
-
-    let fileName;
-
-    if(req.file) {
-        const { buffer, originalname } = req.file;
-        fileName = `${originalname}-${Date.now()}.webp`;
-    
-        // convert input image to webp
-        await sharp(buffer)
-        .webp()
-        .toFile("./images/" + fileName)
-        .catch(function(err) {
-            console.log(err)
-        })
-    }
+    const fileName = req.fileName;
 
     const bookObject = req.file ? {
         ...JSON.parse(req.body.book),
