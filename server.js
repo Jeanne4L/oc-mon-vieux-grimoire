@@ -53,7 +53,9 @@ server.listen(port);
 
 // database connection 
 mongoose.connect('mongodb+srv://jeanne4l:qvdB2wNFm4XCOGAB@monvieuxgrimoire.3jve4je.mongodb.net/?retryWrites=true&w=majority',
-    { useNewUrlParser: true,
-        useUnifiedTopology: true })
+    { 
+        useNewUrlParser: true,
+        useUnifiedTopology: true 
+    })
     .then(() => console.log('Connexion à MongoDB réussie !'))
     .catch(() => console.log('Connexion à MongoDB échouée !'));

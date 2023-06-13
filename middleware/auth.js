@@ -2,8 +2,9 @@ const jwt = require('jsonwebtoken');
 
 module.exports = (req, res, next) => {
     try {
-        // retrieve the token and remove the word Bearer
+        // get the token and remove the word Bearer
         const token = req.headers.authorization.split(' ')[1];
+        // checks that the token is valid thanks to the secret key
         const decodedToken = jwt.verify(token, 'RANDOM_TOKEN_SECRET');
         const userId = decodedToken.userId;
         req.auth = {

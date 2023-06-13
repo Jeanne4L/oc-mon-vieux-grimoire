@@ -1,13 +1,13 @@
-const express = require('express');
-const path = require('path');
-
 const bookRoutes = require('./routes/book');
 const userRoutes = require('./routes/user');
+const path = require('path');
 
+const express = require('express');
 const app = express()
 
 app.use(express.json());
 
+// CORS - HTTP-Header allows cross-origin requests
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content, Accept, Content-Type, Authorization');

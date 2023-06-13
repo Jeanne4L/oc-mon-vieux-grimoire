@@ -9,6 +9,7 @@ exports.createBook = async (req, res) => {
         delete bookObject._id;
         delete bookObject.userId;
     
+        // create an book info object
         const book = new Book({
             ...bookObject,
             userId: req.auth.userId,
@@ -26,11 +27,12 @@ exports.createBook = async (req, res) => {
 exports.getBestRatings = (req, res) => {
     Book.find()
     .then(books => {
-
+        // create a copy of the books array then sorts it by decreasing average rating
         let sortBooks = books.slice().sort((a,b) => b.averageRating - a.averageRating)
 
         let bestBooks = [];
 
+        // push 3 best books
         for (let i=0; i<3; i++) {
             let bestBook = sortBooks[i];
             bestBooks.push(bestBook);
@@ -64,9 +66,9 @@ exports.rateBook = (req, res) => {
                 let totalRating = 0;
                 for( let i=0; i<book.ratings.length; i++) {
                     let currentGrade = book.ratings[i].grade;
-                    
                     totalRating += currentGrade;
                 }
+
                 book.averageRating = totalRating / book.ratings.length;
                 return book.save();
             }
@@ -85,6 +87,7 @@ exports.getAllBooks = (req, res) => {
 exports.modifyBook = (req, res) => {
     const fileName = req.fileName;
 
+    // if file create an object else a string
     const bookObject = req.file ? {
         ...JSON.parse(req.body.book),
         imageUrl: `${req.protocol}://${req.get('host')}/images/${fileName}`
@@ -99,8 +102,8 @@ exports.modifyBook = (req, res) => {
                 message: 'Unauthorized'
             })
         } else {
+            // remove old picture
             const oldImage = book.imageUrl.split('/images/')[1];
-
             if (req.file && oldImage) {
                 fs.unlink(`./images/${oldImage}`, error => {
                     if (error) {
@@ -128,6 +131,7 @@ exports.deleteBook = (req, res) => {
             })
         } else {
             const filename = book.imageUrl.split('/images/')[1];
+            // remove the picture
             fs.unlink(`./images/${filename}`, () => {
                 Book.deleteOne({_id: req.params.id})
                 .then(() => res.status(200).json({

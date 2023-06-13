@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 
 exports.signup = (req, res, next) => {
+    // hash encrypts password with 10 iterations
     bcrypt.hash(req.body.password, 10)
     .then(hash => {
         const user = new User({
@@ -34,6 +35,7 @@ exports.login = (req, res, next) => {
                         message: 'Incorrect username/password pair'
                     })
                 } else {
+                    // return user authentication info, a token valid for 24h and validated with the secret key
                     res.status(200).json({
                         userId: user.id,
                         token: jwt.sign(

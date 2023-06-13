@@ -7,7 +7,7 @@ module.exports = async (req, res, next) => {
         const { buffer, originalname } = req.file;
         fileName = `${originalname}-${Date.now()}.webp`;
 
-        // convert input image to webp
+        // resizes input image and converts it to webp 
         await sharp(buffer)
         .resize({
             width: 600,
