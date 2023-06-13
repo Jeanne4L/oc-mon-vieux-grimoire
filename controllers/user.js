@@ -12,7 +12,7 @@ exports.signup = (req, res, next) => {
         });
         user.save()
         .then(() => res.status(201).json({
-            message: 'Utilisateur créé'
+            message: 'User created'
         }))
         .catch(error => res.status(400).json({error}))
     })
@@ -24,14 +24,14 @@ exports.login = (req, res, next) => {
     .then(user => {
         if(user === null) {
             res.status(401).json({
-                message: 'Paire identifiant/mot de passe incorrecte'
+                message: 'Incorrect username/password pair'
             })
         } else {
             bcrypt.compare(req.body.password, user.password)
             .then(valid => {
                 if (!valid) {
                     res.status(401).json({
-                        message: 'Paire identifiant/mot de passe incorrecte'
+                        message: 'Incorrect username/password pair'
                     })
                 } else {
                     res.status(200).json({

@@ -3,7 +3,7 @@ const router = express.Router();
 
 const multer = require('../middleware/multer-config');
 const auth = require('../middleware/auth');
-const imgProcessing = require('../middleware/sharp');
+const imgProcessing = require('../middleware/sharp-imgProcessing');
 const bookCtrl = require('../controllers/book');
 
 router.get('/', bookCtrl.getAllBooks);
