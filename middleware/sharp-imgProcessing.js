@@ -9,12 +9,17 @@ module.exports = async (req, res, next) => {
 
         // convert input image to webp
         await sharp(buffer)
+        .resize({
+            width: 600,
+            height: 600,
+            fit: 'cover'
+        })
         .webp()
         .toFile("./images/" + fileName)
         .catch(function(error) {
             console.log(error)
         });
-    }
+    } 
 
     req.fileName = fileName; 
     next();
