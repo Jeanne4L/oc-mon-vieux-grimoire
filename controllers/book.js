@@ -8,6 +8,12 @@ exports.createBook = async (req, res) => {
         const bookObject = JSON.parse(req.body.book);
         delete bookObject._id;
         delete bookObject.userId;
+
+        // if book creator doesn't rate it, this sets default value for ratings and average
+        if(bookObject.ratings[0].grade === 0) {
+            bookObject.ratings = [];
+            bookObject.averageRating = 0;
+        }
     
         // create an book info object
         const book = new Book({
@@ -52,25 +58,42 @@ exports.getOneBook = (req, res) => {
 exports.rateBook = (req, res) => {
     Book.findOne({_id: req.params.id})
     .then(book => {
-        for(let i=0; i<book.ratings.length; i++) {
-            if(req.auth.userId === book.ratings.userId) {
-                res.status(403).json({
-                    message: 'Unauthorized'
-                })
-            } else {
-                book.ratings.push({
-                    userId: req.auth.userId,
-                    grade: req.body.rating
-                })
+        // if book hasn't rate, push new rating else check if userId already exists
+        if(book.ratings.length === 0) {
+            book.ratings.push({
+                userId: req.auth.userId,
+                grade: req.body.rating
+            })
 
-                let totalRating = 0;
-                for( let i=0; i<book.ratings.length; i++) {
-                    let currentGrade = book.ratings[i].grade;
-                    totalRating += currentGrade;
+            let totalRating = 0;
+            for( let i=0; i<book.ratings.length; i++) {
+                let currentGrade = book.ratings[i].grade;
+                totalRating += currentGrade;
+            }
+
+            book.averageRating = totalRating / book.ratings.length;
+            return book.save();
+        } else {
+            for(let i=0; i<book.ratings.length; i++) {
+                if(req.auth.userId === book.ratings.userId) {
+                    res.status(403).json({
+                        message: 'Unauthorized'
+                    })
+                } else {
+                    book.ratings.push({
+                        userId: req.auth.userId,
+                        grade: req.body.rating
+                    })
+    
+                    let totalRating = 0;
+                    for( let i=0; i<book.ratings.length; i++) {
+                        let currentGrade = book.ratings[i].grade;
+                        totalRating += currentGrade;
+                    }
+    
+                    book.averageRating = totalRating / book.ratings.length;
+                    return book.save();
                 }
-
-                book.averageRating = totalRating / book.ratings.length;
-                return book.save();
             }
         }
     })

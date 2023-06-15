@@ -1,5 +1,6 @@
 const http = require('http');
 const app = require('./app');
+require('dotenv').config();
 const mongoose = require('mongoose');
 
 // return valid port
@@ -52,7 +53,7 @@ server.on('listening', () => {
 server.listen(port);
 
 // database connection 
-mongoose.connect('mongodb+srv://jeanne4l:qvdB2wNFm4XCOGAB@monvieuxgrimoire.3jve4je.mongodb.net/?retryWrites=true&w=majority',
+mongoose.connect(process.env.MONGODB_CONNECTION,
     { 
         useNewUrlParser: true,
         useUnifiedTopology: true 
