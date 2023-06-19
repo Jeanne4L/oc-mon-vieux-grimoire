@@ -3,7 +3,13 @@ const userRoutes = require('./routes/user');
 const path = require('path');
 
 const express = require('express');
-const app = express()
+const helmet = require('helmet');
+const app = express();
+
+// allows cross-origin images
+app.use(helmet({ 
+    crossOriginResourcePolicy: { policy: "same-site" } 
+}));
 
 app.use(express.json());
 
