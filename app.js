@@ -4,12 +4,21 @@ const path = require('path');
 
 const express = require('express');
 const helmet = require('helmet');
+const rateLimit = require('express-rate-limit');
 const app = express();
 
 // allows cross-origin images
 app.use(helmet({ 
     crossOriginResourcePolicy: { policy: "same-site" } 
 }));
+
+// This limits the number of requests to 100 for 15mn
+app.use(rateLimit({
+	windowMs: 15 * 60 * 1000,
+	max: 100, 
+	standardHeaders: true,
+	legacyHeaders: false, 
+}))
 
 app.use(express.json());
 
