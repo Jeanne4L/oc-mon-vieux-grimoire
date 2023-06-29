@@ -27,7 +27,8 @@ Install the dependencies and devDependencies and start the server.
 npm i
 nodemon server
 ```
-Create a .env file
+Change the .env.dist file to .env file
+Include the environment variable value entered in the project deliverable
 
 ## API
 
