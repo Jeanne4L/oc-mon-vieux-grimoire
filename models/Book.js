@@ -21,8 +21,6 @@ const bookSchema = mongoose.Schema({
     averageRating: { 
         type: Number, 
         required: false, 
-        min: 0,
-        max: 5,
         default: 0
     },
 })

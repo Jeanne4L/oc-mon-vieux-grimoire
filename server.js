@@ -53,7 +53,7 @@ server.on('listening', () => {
 server.listen(port);
 
 // database connection 
-mongoose.connect(process.env.MONGODB_CONNECTION,
+mongoose.connect(`mongodb+srv://${process.env.MONGODB_ID}:${process.env.MONGODB_PASSWORD}@${process.env.MONGODB_HOST}.3jve4je.mongodb.net/?retryWrites=true&w=majority`,
     { 
         useNewUrlParser: true,
         useUnifiedTopology: true 
