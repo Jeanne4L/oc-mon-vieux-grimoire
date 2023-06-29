@@ -1,7 +1,8 @@
 const fs = require('fs');
 const Book = require('../models/Book');
 
-exports.createBook = async (req, res) => {
+// 
+exports.create = (req, res) => {
     if(req.file) {
         const fileName = req.fileName;
 
@@ -55,7 +56,7 @@ exports.getOneBook = (req, res) => {
     .catch(error => res.status(404).json({error}))
 }
 
-exports.rateBook = (req, res) => {
+exports.rate = (req, res) => {
     Book.findOne({_id: req.params.id})
     .then(book => {
         // if book hasn't rate, push new rating else check if userId already exists
@@ -101,13 +102,13 @@ exports.rateBook = (req, res) => {
     .catch(error => res.status(400).json({error}))
 }
 
-exports.getAllBooks = (req, res) => {
+exports.getAll = (req, res) => {
     Book.find()
     .then(books => res.status(200).json(books))
     .catch(error => res.status(400).json({error}))
 }
 
-exports.modifyBook = (req, res) => {
+exports.modify = (req, res) => {
     const fileName = req.fileName;
 
     // if file create an object else a string
@@ -145,7 +146,7 @@ exports.modifyBook = (req, res) => {
     .catch(error => res.status(404).json({error}))
 }
 
-exports.deleteBook = (req, res) => {
+exports.delete = (req, res) => {
     Book.findOne({_id: req.params.id})
     .then(book => {
         if(book.userId !== req.auth.userId) {
