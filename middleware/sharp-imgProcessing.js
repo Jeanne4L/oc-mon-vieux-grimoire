@@ -1,5 +1,6 @@
 const sharp = require('sharp');
 
+// Optimizes images
 module.exports = async (req, res, next) => {
     let fileName;
 

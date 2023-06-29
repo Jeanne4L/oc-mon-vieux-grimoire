@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 
+// Check the user is logged in and valid
 module.exports = (req, res, next) => {
     try {
         // get the token and remove the word Bearer

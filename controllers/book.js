@@ -1,7 +1,7 @@
 const fs = require('fs');
 const Book = require('../models/Book');
 
-// 
+// Create a new book if user is logged in
 exports.create = (req, res) => {
     if(req.file) {
         const fileName = req.fileName;
@@ -31,6 +31,7 @@ exports.create = (req, res) => {
     }
 }
 
+// Get top 3 rated books
 exports.getBestRatings = (req, res) => {
     Book.find()
     .then(books => {
@@ -50,12 +51,14 @@ exports.getBestRatings = (req, res) => {
     .catch(error => res.status(400).json({error}))
 }
 
+// Get a book with its id
 exports.getOneBook = (req, res) => {
     Book.findOne({ _id: req.params.id})
     .then(book => res.status(200).json(book))
     .catch(error => res.status(404).json({error}))
 }
 
+// Rate a book if user is logged in
 exports.rate = (req, res) => {
     Book.findOne({_id: req.params.id})
     .then(book => {
@@ -102,12 +105,14 @@ exports.rate = (req, res) => {
     .catch(error => res.status(400).json({error}))
 }
 
+// Get all books saved in database
 exports.getAll = (req, res) => {
     Book.find()
     .then(books => res.status(200).json(books))
     .catch(error => res.status(400).json({error}))
 }
 
+// Modify a book if user is the book's creator
 exports.modify = (req, res) => {
     const fileName = req.fileName;
 
@@ -146,6 +151,7 @@ exports.modify = (req, res) => {
     .catch(error => res.status(404).json({error}))
 }
 
+// Remove a book if user is the book's creator
 exports.delete = (req, res) => {
     Book.findOne({_id: req.params.id})
     .then(book => {
